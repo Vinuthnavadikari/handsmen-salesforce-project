@@ -1,147 +1,102 @@
-🧵 HandsMen Threads Salesforce CRM Project Documentation
-📖 Overview
-HandsMen Threads, a progressive fashion organization, is implementing Salesforce CRM to modernize and automate its customer engagement, inventory tracking, and order fulfillment processes. This documentation outlines the entire Salesforce project architecture, including data modeling, automation, email communication, Apex development, and security implementation.
+**HandsMen Threads - Salesforce CRM Automation Project**
 
-🎯 Project Goals
-Centralize business data through a robust data model
+---
 
-Automate critical business processes like order confirmation, loyalty tracking, and stock management
+### ✍️ Project Title:
 
-Ensure data consistency and accuracy through validation and automation
+**HandsMen Threads CRM Automation Using Salesforce**
 
-Improve customer experience through timely communication and intelligent insights
+---
 
-🧵 Key Use Cases
-Use Case	Description
-Order Confirmation	Sends automatic emails to customers after order placement
-Loyalty Management	Tracks customer spending and upgrades loyalty tiers dynamically
-Stock Alerts	Notifies warehouse when product stock drops below 5 units
-Bulk Order Processing	Runs scheduled job at midnight to process bulk orders and update inventory/financials
+### 🚧 Problem Statement:
 
-🧱 Salesforce Setup
-🔐 Environment Configuration
-Salesforce Developer Edition created
+HandsMen Threads, a fast-growing fashion retail company, faced major issues with decentralized customer management, untracked order histories, lack of automated alerts for stock, and no defined loyalty program. Manual processes for creating customer records, managing inventory, confirming orders, and assigning roles caused inefficiencies and delays.
 
-Authenticated with Salesforce CLI (SFDX)
+---
 
-Project initialized using Salesforce DX
+### 📊 Objective:
 
-🗂️ Data Model
-📦 Custom Objects
-Order__c
+To implement a fully automated and centralized CRM system in Salesforce for:
 
-Product__c
+* Managing customer and order records
+* Sending order confirmation emails
+* Tracking inventory and sending low-stock alerts
+* Assigning loyalty statuses based on purchases
+* Managing users through profiles and permission sets
+* Ensuring validations via Apex triggers
+* Scheduling inventory restock via Apex batch jobs
 
-Customer__c
+---
 
-Loyalty__c
+### 💼 Modules Covered:
 
-🔑 Custom Fields
-Stock_Level__c
+1. **Data Modeling**
 
-Loyalty_Status__c
+   * Custom Objects: `HandsMen_Customer__c`, `HandsMen_Order__c`, `HandsMen_Product__c`, `Inventory__c`
+   * Relationships: Lookup relationships (e.g., Order to Customer)
 
-Total_Spent__c
+2. **User Management**
 
-Reward_Points__c
+   * Created users: Niklaus (Sales), Kol (Inventory), Elijah & Rebekah (Marketing)
+   * Profiles: Platform 1
+   * Roles: Sales, Inventory Manager, Marketing Manager
+   * Permission Set: `Permission_Platform_1`
 
-📋 Record Types & Layouts
-Record Types to support order variations and loyalty levels
+3. **Automation via Flows**
 
-Custom Layouts for Sales and Warehouse teams
+   * Record-Triggered Flow: Order confirmation email when status = Confirmed
+   * Record-Triggered Flow: Low Stock alert when quantity < 5
+   * Scheduled Flow: Update Loyalty Status based on Total\_Purchases\_\_c
 
-📊 Tabs & App
-Tabs created for all major custom objects
+4. **Email Templates & Alerts**
 
-Lightning App: HandsMen CRM with role-based accessibility
+   * `Order_Confirmation_Email` (HTML Template with Classic Letterhead)
+   * `Low_Stock_Alert` email template
+   * Email Alerts for both flows
 
-🔄 Automation Strategy
-💡 Flows
-Flow Type	Trigger	Action
-Record-Triggered	On Order__c creation	Send email to customer
-Record-Triggered	On Customer__c.Total_Spent__c update	Adjust loyalty tier
-Record-Triggered	On Product__c.Stock_Level__c < 5	Notify warehouse
-Scheduled Flow	Runs at 12:00 AM daily	Process bulk orders, update inventory & financials
+5. **Apex Implementation**
 
-✉️ Email Templates
-Template Name	Purpose
-Order Confirmation	Sent to customer after order placement
-Loyalty Reward Notification	Informs customer about loyalty status change
-Stock Alert Email	Sent to Warehouse Manager when stock is low
+   * `OrderTriggerHandler`: Validates Quantity based on Order Status
+   * `OrderTrigger`: Calls the handler
+   * `InventoryBatchJob`: Batch Apex + Schedulable to restock products with quantity < 10
 
-All templates use HTML format and are deployed with Flow actions or Apex.
+6. **Testing & Deployment**
 
-💻 Apex Logic
-🔧 Triggers
-On Order__c → Maintain data relationship with Customer__c
+   * Trigger tested via record creation in Developer Console
+   * Batch job scheduled via `System.schedule` in Execute Anonymous window
+   * All flows and automation tested successfully
 
-On Customer__c.Total_Spent__c → Update Loyalty__c tier
+---
 
-📦 Classes
-Class	Purpose
-EmailUtility.cls	Sends dynamic emails via Apex
-PurchaseLogicHandler.cls	Manages customer loyalty and purchase behavior tracking
+### 🔧 Highlights of Automation:
 
-🕓 Asynchronous Apex
-🔁 Batch Apex
-Batch Class: BulkOrderProcessorBatch
+* Real-time order confirmation emails to customers
+* Inventory stock monitoring with auto alerts
+* Loyalty program classification (Gold, Silver, Bronze)
+* Apex validations prevent incorrect order entries
+* Daily scheduled restocking job
+* Seamless role/profile-based access control
 
-Purpose:
+---
 
-Update inventory and financial data
+### 🌐 GitHub Repository:
 
-Handle nightly bulk orders
+https://github.com/Vinuthnavadikari/handsmen-salesforce-project
 
-Scheduled Job: Executes every night at 12:00 AM
+---
 
-🔒 Security Model
-Component	Description
-Profiles	Sales_Rep, Warehouse_Manager
-Roles	Defined for Sales, Inventory, Admin hierarchy
-Permission Sets	Separate sets for Flow access, Reports, and App access
-Users	Created and assigned with appropriate role/profile/permissions
+### 📹 Demo Video:
 
-🧠 Skills Applied
-Skill	Application
-Data Modeling	Built objects, relationships, fields, and record types
-Lightning UI Design	Created modular pages using Lightning App Builder
-Process Automation	Flows and Apex used to reduce manual work
-Email Communication	Templated, automated email alerts and confirmations
-Security	Configured fine-grained access with profiles and permission sets
-Asynchronous Processing	Batch Apex to handle large data volumes efficiently
+https://drive.google.com/file/d/1aE6ueZLQgwXbebnNT6azhm6u-Ez1e6tV/view?usp=sharing
 
-🗂️ Project Directory Structure
-php
-Copy
-Edit
-handsmen-threads-salesforce/
-└── force-app/
-    └── main/
-        └── default/
-            ├── objects/             # Custom Object Metadata
-            ├── classes/             # Apex Classes (Business Logic, Utilities)
-            ├── triggers/            # Apex Triggers (Order, Customer, Loyalty)
-            ├── flows/               # Flow Definitions (RTFs, Scheduled)
-            ├── layouts/             # Page Layouts for UIs
-            ├── permissionsets/      # Permission Set Metadata
-            └── flexipages/          # Lightning Pages for CRM App
-├── sfdx-project.json                # Project Config File
-└── README.md                        # Project Overview File
-📅 Roadmap & Future Enhancements
- Integrate Payment Gateway for real-time transaction capture
+---
 
- Add dashboards for Sales, Inventory, and Loyalty insights
+### 🎓 Submitted by:
 
- Launch Experience Cloud Portal for customer self-service
+**Vinuthna Vadikari**
 
- Integrate third-party APIs for logistics and shipping
+---
 
-👥 Contributors
-Lead Admin & Developer: Vadikari Vinuthna
+### ✅ Conclusion:
 
-Organization: HandsMen Threads
-
-Contact: vinuthnavadikari2006@gmail.com
-
-📄 License
-This project is built for internal CRM enhancements and educational purposes. All trademarks and data models are the intellectual property of HandsMen Threads.
+This Salesforce implementation enables HandsMen Threads to transform their customer relationship, order tracking, and inventory management into a seamless, automated system. By leveraging Flows, Apex, and core CRM features, the solution provides scalability, accuracy, and business efficiency.
