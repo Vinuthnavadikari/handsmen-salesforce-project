@@ -87,8 +87,7 @@ https://github.com/Vinuthnavadikari/handsmen-salesforce-project
 
 ### 📹 Demo Video:
 
-https://drive.google.com/file/d/1aE6ueZLQgwXbebnNT6azhm6u-Ez1e6tV/view?usp=sharing
-
+https://drive.google.com/file/d/1gjLiBxG4vfPF4suuQns0lV4FL0TJsJui/view?usp=sharing
 ---
 
 ### 🎓 Submitted by:
